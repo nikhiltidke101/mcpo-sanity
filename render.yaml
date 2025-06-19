@@ -1,0 +1,13 @@
+services:
+  - type: web
+    name: sanity-mcp-server
+    env: docker
+    dockerfilePath: ./Dockerfile
+    envVars:
+      - key: PORT
+        value: 8000
+      - key: API_KEY
+        sync: false # This will be a secret you set in Render dashboard
+    healthCheckPath: /docs # OpenAPI docs endpoint
+    numInstances: 1
+    plan: starter # or choose another plan based on your needs 
