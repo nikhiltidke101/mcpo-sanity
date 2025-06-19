@@ -30,8 +30,11 @@ RUN uv pip install . && rm -rf ~/.cache
 # Install Sanity MCP server globally
 RUN npm install -g @sanity/mcp-server@latest
 
-# Expose the port
+# Create a startup script that uses the PORT environment variable
+RUN echo '#!/bin/bash\nmcpo --port ${PORT:-8000} --api-key ${API_KEY} -- npx -y @sanity/mcp-server@latest' > /app/start.sh && chmod +x /app/start.sh
+
+# Expose the port (will be overridden by PORT env var)
 EXPOSE 8000
 
 # Start the server
-CMD ["mcpo", "--port", "8000", "--", "npx", "-y", "@sanity/mcp-server@latest"]
+CMD ["/app/start.sh"]
